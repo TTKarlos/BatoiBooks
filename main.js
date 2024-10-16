@@ -1,11 +1,9 @@
-import './style.css'
-import {
-    booksFromUser,
-    booksFromModule,
-    incrementPriceOfbooks,
-    booksWithStatus
-} from './src/functions.js';
-import books from './src/services/datos'
+import './style.css';
+import data from './src/services/datos.js'; 
+import Books from './src/model/books.class.js';
+import Users from './src/model/users.class.js';
+import Modules from './src/model/modules.class.js';
+
 document.querySelector('#app').innerHTML = `
   <div>
     <a href="https://vitejs.dev" target="_blank">
@@ -19,7 +17,15 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
-console.log(booksFromUser(books.books, 4));
-console.log(booksFromModule(books.books, '5021'));
-console.log(booksWithStatus(books.books, "good"));
-console.log(incrementPriceOfbooks(books.books, 0.1));
+const misModulos = new Modules();
+misModulos.populate(data.modules);
+const misUsers = new Users();
+misUsers.populate(data.users);
+const misBooks = new Books();
+misBooks.populate(data.books);
+console.log(`Devolucion de data.Books ${data.books}`);
+
+console.log(misBooks.toString());
+console.log(misBooks.booksFromModule(data.books, '5021')); 
+console.log(misBooks.booksWithStatus(data.books, 'new')); 
+console.log(misBooks.incrementPriceOfbooks(data.books, 0.1)); 
