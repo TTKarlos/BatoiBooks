@@ -19,6 +19,7 @@ export default class Books {
     return book;
   }
 
+  
   async removeBook(id) {
     const libro = await removeDBBook(id);
     let cont = 0;
