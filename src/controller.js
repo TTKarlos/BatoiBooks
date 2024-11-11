@@ -55,25 +55,6 @@ export default class Controller {
     }
   }
 
-  renderMessage(tipo, message) {
-    const div = document.createElement('div');
-    div.className = tipo + " alert alert-danger alert-dismissible"
-    div.setAttribute("role", "alert");
-    div.innerHTML = `${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="this.parentElement.remove()">x</button>
-    `;
-
-    const messages = document.getElementById('messages');
-    if (messages) {
-        messages.appendChild(div);
-    }
-
-    if (tipo !== 'error') {
-        setTimeout(() => {
-            div.remove();
-        }, 3000);
-    }
-}
 
   // Método que configura los manejadores de eventos para la vista
   setupEventListeners() {
