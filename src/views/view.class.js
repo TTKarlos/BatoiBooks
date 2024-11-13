@@ -35,10 +35,20 @@ export default class Vista {
           <p>${book.soldDate ? `Vendido el ${book.soldDate}` : 'En venta'}</p>
           <p>${book.comments}</p>
           <h4>${book.price} €</h4>
+          <button class="carrito" data-id="${book.id}">
+          <span class="material-icons">add_shopping_cart</span>
+          </button>
+          <button class="edit" data-id="${book.id}">
+          <span class="material-icons">edit</span>
+          </button>
+           <button class="delete" data-id="${book.id}">
+          <span class="material-icons">delete</span>
+          </button>
         </div>
       `;
       this.booksList.appendChild(bookElement); // Añade el libro a la lista de libros
     }
+
 
   
     // Método que elimina un libro de la vista por su ID
@@ -91,5 +101,111 @@ export default class Vista {
         callback(idToRemove); // Llama al callback con el ID
       });
     }
+
+    setBookActionHandler(callback) {
+      this.booksList.addEventListener('click', (event) => {
+        const target = event.target.closest('button');
+        if (!target) return; // Salir si no es un botón
+    
+        // Detectar acción y obtener ID del libro
+        const action = target.classList.contains('carrito') ? 'carrito' :
+                       target.classList.contains('edit') ? 'edit' :
+                       target.classList.contains('delete') ? 'delete' : null;
+        if (!action) return; // Salir si no hay acción
+    
+        const bookId = target.dataset.id; // Obtener ID del libro
+        callback(action, bookId); // Llamar al callback con acción e ID
+      });
+    }
+
+    setFormForEditing(book) {
+      // Selecciona el segundo <h2> dentro del formulario y lo cambia a "Editar Libro"
+      const header = this.form.querySelector("h2");
+   
+        header.textContent = "Editar Libro";
+      
+    
+      // Rellena los campos del formulario con los datos del libro a editar
+      document.getElementById("id-module").value = book.moduleCode;
+      document.getElementById("publisher").value = book.publisher;
+      document.getElementById("price").value = book.price;
+      document.getElementById("pages").value = book.pages;
+      document.getElementById("comments").value = book.comments;
+      
+      // Selecciona el estado correspondiente
+      const stateRadio = document.querySelector(`input[name="state"][value="${book.status}"]`);
+      if (stateRadio) {
+        stateRadio.checked = true;
+      }
+
+      const submitButton = this.form.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.textContent = "Guardar Edición";
+      }
+    
+      // Mostrar el botón de "Cancelar Edición"
+      const cancelEditButton = document.getElementById("cancelEditButton");
+      if (cancelEditButton) {
+        cancelEditButton.style.display = "inline";
+      }
+    
+
+      // Indica que estamos en modo de edición añadiendo un atributo data
+      this.form.dataset.editingId = book.id;
+
+    }
+
+    cancelEditing() {
+      // Cambiar el título del formulario a "Añadir Libro"
+      const header = this.form.querySelector("h2");
+        header.textContent = "Añadir Libro";
+      
+    
+      // Cambiar el botón de "Guardar Edición" a "Añadir"
+      const submitButton = this.form.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.textContent = "Añadir";
+      }
+    
+      // Ocultar el botón de "Cancelar Edición"
+      const cancelEditButton = document.getElementById("cancelEditButton");
+      if (cancelEditButton) {
+        cancelEditButton.style.display = "none";
+      }
+    
+      // Limpiar el formulario y eliminar el atributo `data-editing-id`
+      this.bookForm.reset();
+      delete this.bookForm.dataset.editingId;
+    }
+    
+
+    resetForm() {
+
+      document.getElementById("id-module").value = "";
+      document.getElementById("publisher").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("pages").value = "";
+      document.getElementById("comments").value = "";
+
+  
+  
+      delete this.form.dataset.editingId;
+      window.location.reload();
+
+      this.form.querySelector('h2').textContent = 'Añadir Libro';
+  
+      const cancelEditButton = document.getElementById("cancelEditButton");
+      if (cancelEditButton) {
+        cancelEditButton.style.display = "none";
+      }
+  
+      const editButton = this.form.querySelector('button[type="submit"]');
+      editButton.textContent = 'Añadir'; 
+    
+
+    }
+  
+    
+
   }
   

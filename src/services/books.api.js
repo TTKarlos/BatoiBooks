@@ -49,13 +49,14 @@ export async function removeDBBook(idBook) {
     if (!response.ok) {
         throw new Error(`Error ${response.status} de la Base (Eliminar Book) => ${response.statusText}`);
     }
-    const removedBook = await response.json(); // Esto puede variar dependiendo de tu API
+    const removedBook = await response.json();
     return removedBook;
 }
 
 // Cambia un libro existente por ID
 export async function changeDBBook(idBook, updateBook) {
-    const response = await fetch(API + `books/${idBook}`, { // Corregido el endpoint
+    console.log("ID del libro a actualizar:", idBook);  
+    const response = await fetch(API + `books/${idBook}`, { 
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

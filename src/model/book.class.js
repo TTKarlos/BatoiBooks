@@ -1,11 +1,7 @@
 export default class Book {
-    static lastId = 0;
+
     constructor({ id, userId, moduleCode, title, author, edition, publisher, price, pages, status, photo = '', comments = '', soldDate = '' }) {
-        Book.lastId += 1; 
-        if (Book.lastId > 9999) {
-            throw new Error("No se pueden asignar más de 9999 IDs"); 
-        }
-        this.id = Book.lastId;
+        this.id = id;
         this.userId = userId;
         this.moduleCode = moduleCode;
         this.title = title;

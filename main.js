@@ -20,18 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <main>
       <div id="list"></div>
-
       <div id="form">
-        <div>
-          <label for="id-remove">Id:</label>
-          <input type="number" id="id-remove">
-          <button id="remove">Borrar libro</button>
-        </div>
+        <br>
+        <h2 class="editar">Añadir Libro</h2>
         <form id="bookForm">
            <div>
             <label for="id-module">Módulo:</label>
             <select id="id-module">
-            <option>- Selecciona un módulo -</option>
+            <option value="" selected>- Selecciona un módulo -</option>
              </select>
           </div>
 
@@ -67,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <button type="submit">Añadir</button>
           <button type="reset">Reset</button>
+          <button type="button" id="cancelEditButton" style="display: none;">Cancelar Edición</button>
         </form>
       </div>
 

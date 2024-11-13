@@ -21,33 +21,43 @@ export default class Books {
 
   
   async removeBook(id) {
-    const libro = await removeDBBook(id);
+    // Realiza la eliminación del libro en la base de datos usando la API
+    const libro = await removeDBBook(id);  // Llamada a la API para eliminar el libro
+    if (!libro) throw new Error("El libro con este id no existe"); // Verifica si el libro fue encontrado
+
+    // Elimina el libro de la lista local de libros
     let cont = 0;
     let encontrado = false;
-    this.data.forEach(libro => {
-      if (libro.id === id) {
-        this.data.splice(cont, 1);
-        encontrado = true;
-      }
-      cont++;
-    });
-    if (!libro) throw "El libro con este id no existe";
-  }
 
-  async changeBook(libro) {
-    // Cambia el libro en la base de datos
-    const updatedBook = await changeDBBook(libro.id, libro);
-    
-    // Busca el libro en el array
-    const bookIndex = this.data.findIndex(book => book.id === libro.id);
-    if (bookIndex !== -1) {
-        // Actualiza el libro en el array
-        this.data[bookIndex] = new Book(updatedBook); // o puedes usar Object.assign
-        return this.data[bookIndex];
-    } else {
-        throw new Error("El libro no se ha encontrado");
+    // Aquí estamos buscando el libro en base a su ID (que ahora es un string)
+    this.data.forEach((libro, index) => {
+        if (libro.id === id) {  // Comparación del ID como string
+            this.data.splice(index, 1);  // Elimina el libro del array
+            encontrado = true;
+        }
+        cont++;
+    });
+
+    // Si no se encuentra el libro en la lista local, lanzamos un error
+    if (!encontrado) {
+        throw new Error("El libro con este id no se encuentra en la lista local");
     }
 }
+async changeBook(bookId, updatedData) {
+  // Primero actualizamos el libro en la base de datos
+  const updatedBook = await changeDBBook(bookId, updatedData);
+  
+  // Luego buscamos el libro localmente por su ID
+  const bookIndex = this.data.findIndex(book => book.id === bookId);
+  if (bookIndex !== -1) {
+    // Actualizamos el libro localmente
+    this.data[bookIndex] = new Book(updatedBook); // Usamos el constructor de Book para crear una nueva instancia con los datos actualizados
+    return this.data[bookIndex]; // Retornamos el libro actualizado
+  } else {
+    throw new Error("El libro no se ha encontrado");
+  }
+}
+
 
   toString(books) {
     let toString = "Libros: ";
@@ -57,13 +67,10 @@ export default class Books {
     return toString;
   }
 
-  getBookById(bookId) {
-    const book = this.data.find(libro => bookId === libro.id);
-    if (book) {
-      return book;
-    }
-    throw "No se ha encontrado ningun libro por el id";
+  getBookById(id) {
+    return this.data.find(book => book.id === id);
   }
+  
 
   getBookIndexById(bookId) {
     const book = this.data.findIndex(libro => bookId === libro.id);
