@@ -7,6 +7,8 @@ export default class Vista {
       this.remove = document.querySelector('#remove');
       this.bookForm = document.querySelector('#bookForm');
       this.messages = document.querySelector('#messages');
+      window.addEventListener("hashchange",this.mostrarDivSegunHash);
+    
     }
   
     // Método que llena el selector de módulos con opciones
@@ -119,6 +121,7 @@ export default class Vista {
     }
 
     setFormForEditing(book) {
+      this.form.style.display = "block";
       // Selecciona el segundo <h2> dentro del formulario y lo cambia a "Editar Libro"
       const header = this.form.querySelector("h2");
    
@@ -202,8 +205,29 @@ export default class Vista {
       const editButton = this.form.querySelector('button[type="submit"]');
       editButton.textContent = 'Añadir'; 
     
-
     }
+
+    mostrarDivSegunHash() {
+      // Oculta todos los divs al inicio
+      document.getElementById("form").style.display = "none";
+      document.getElementById("about").style.display = "none";
+      
+      // Obtén el hash actual de la URL (sin el símbolo '#')
+      const hash = window.location.hash.substring(1);
+  
+      // Muestra el div correspondiente al hash si existe
+      if (hash === "form") {
+          document.getElementById("form").style.display = "block";
+      } else if (hash === "about") {
+          document.getElementById("about").style.display = "block";
+      }
+  
+    }
+  
+
+
+  
+
   
     
 

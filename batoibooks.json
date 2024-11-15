@@ -2127,21 +2127,21 @@
   ],
   "books": [
     {
-      "id": "d209",
-      "moduleCode": "0014",
-      "publisher": "la peste69333",
-      "price": "333",
-      "pages": "44",
-      "status": "good",
+      "id": "1",
+      "moduleCode": "0015",
+      "publisher": "la peste",
+      "price": "546",
+      "pages": "5565",
+      "status": "new",
       "comments": ""
     },
     {
-      "id": "4522",
-      "moduleCode": "0031",
-      "publisher": "McGraw-Hill",
-      "price": "356",
-      "pages": "76",
-      "status": "used",
+      "id": "2",
+      "moduleCode": "0022",
+      "publisher": "la peste6945",
+      "price": "43",
+      "pages": "343",
+      "status": "new",
       "comments": ""
     }
   ]

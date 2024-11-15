@@ -12,13 +12,25 @@ export default class Books {
     });
   }
 
-  async addBook(libro) {
-    const nuevoLibro = await addDBBook(libro);
-    let book = new Book(nuevoLibro);
-    this.data.push(book);
-    return book;
-  }
 
+
+  async addBook(book) {
+
+		let newId = 0;
+
+		if (this.data.length === 0) {
+			newId = 1;
+		} else {
+			const lastId = parseInt(this.data[this.data.length - 1].id);
+			newId = lastId + 1;
+		}
+
+		const newDBBook = {id: String(newId), ...book};
+
+		const newBook = new Book(await addDBBook(newDBBook));
+		this.data.push(newBook);
+		return newBook;
+    }
   
   async removeBook(id) {
     // Realiza la eliminación del libro en la base de datos usando la API

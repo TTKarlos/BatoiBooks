@@ -270,5 +270,11 @@ footer {
   .card button span.material-icons {
     font-size: 1.2em;
   }
+
+  #form,#about{
+    display: none;
+  }
+
+
   
 }

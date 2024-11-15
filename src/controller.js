@@ -50,6 +50,7 @@ export default class Controller {
     this.view.setBookActionHandler(this.handleActionBook.bind(this));
     document.getElementById("cancelEditButton").addEventListener("click", this.cancelEditing.bind(this));
   }
+
   async handleSubmitBook(payload) {
     try {
         const editingId = this.view.form.dataset.editingId;  // Obtén el ID del libro que estamos editando
@@ -112,6 +113,22 @@ export default class Controller {
   }
 
 
+  mostrarDivSegunHash() {
+    // Oculta todos los divs al inicio
+    document.getElementById("form").style.display = "none";
+    document.getElementById("about").style.display = "none";
+    
+    // Obtén el hash actual de la URL (sin el símbolo '#')
+    const hash = window.location.hash.substring(1);
+
+    // Muestra el div correspondiente al hash si existe
+    if (hash === "form") {
+        document.getElementById("form").style.display = "block";
+    } else if (hash === "about") {
+        document.getElementById("about").style.display = "block";
+    }
+
+  }
 
   
 }
