@@ -21,6 +21,8 @@ export default class Controller {
     }
   }
 
+ 
+
   // Método que carga los módulos y libros desde las API
   async loadData() {
     try {
@@ -53,36 +55,48 @@ export default class Controller {
 
   async handleSubmitBook(payload) {
     try {
-        const editingId = this.view.form.dataset.editingId;  // Obtén el ID del libro que estamos editando
-        
-        if (editingId) {
-            // Crear un objeto con solo los campos que el usuario modificó
-            const updatedPayload = {
-                id: editingId,  // Solo necesitamos enviar el ID y los campos que se modificaron
-                moduleCode: payload.moduleCode,
-                publisher: payload.publisher,
-                price: payload.price,
-                pages: payload.pages,
-                status: payload.status,
-                comments: payload.comments  // Enviar los campos modificados
-            };
+      const editingId = this.view.form.dataset.editingId;
+      
+      if (editingId) {
+        // Lógica para editar un libro existente
+        const updatedPayload = {
+          id: editingId,
+          moduleCode: payload.moduleCode,
+          publisher: payload.publisher,
+          price: payload.price,
+          pages: payload.pages,
+          status: payload.status,
+          comments: payload.comments
+        };
 
-            // Llamamos a la función para actualizar el libro
-            const updatedBook = await this.book.changeBook(editingId, updatedPayload);
-            
-            this.view.showMessage("info", "Libro editado con éxito");
-            this.cancelEditing();  // Limpiar el formulario después de la edición
-        } else {
-            // Si no hay un ID, significa que estamos añadiendo un libro nuevo
-            const newBook = await this.book.addBook(payload);
-            this.view.renderBook(newBook);
-            this.view.showMessage("info", "Libro añadido con éxito");
+        const updatedBook = await this.book.changeBook(editingId, updatedPayload);
+        this.view.showMessage("info", "Libro editado con éxito");
+        this.cancelEditing();
+      } else {
+        // Verificar si el libro es duplicado antes de añadirlo
+        if (this.isDuplicateBook(payload)) {
+          this.view.showMessage("error", "Este libro ya existe en la base de datos.");
+          return;
         }
+        // Lógica para añadir un nuevo libro
+        const newBook = await this.book.addBook(payload);
+        this.view.renderBook(newBook);
+        this.view.showMessage("info", "Libro añadido con éxito");
+      }
     } catch (error) {
-        this.view.showMessage("error", `Error al procesar el libro: ${error.message}`);
+      this.view.showMessage("error", `Error al procesar el libro: ${error.message}`);
     }
-}
+  }
 
+  isDuplicateBook(newBook) {
+    return this.book.data.some(book => 
+      book.moduleCode === newBook.moduleCode &&
+      book.publisher === newBook.publisher &&
+      Math.abs(parseFloat(book.price) - parseFloat(newBook.price)) < 0.01 &&
+      parseInt(book.pages) === parseInt(newBook.pages) &&
+      book.status === newBook.status
+    );
+  }
 
   async handleActionBook(action, bookId) {
     switch (action) {
@@ -113,22 +127,7 @@ export default class Controller {
   }
 
 
-  mostrarDivSegunHash() {
-    // Oculta todos los divs al inicio
-    document.getElementById("form").style.display = "none";
-    document.getElementById("about").style.display = "none";
-    
-    // Obtén el hash actual de la URL (sin el símbolo '#')
-    const hash = window.location.hash.substring(1);
 
-    // Muestra el div correspondiente al hash si existe
-    if (hash === "form") {
-        document.getElementById("form").style.display = "block";
-    } else if (hash === "about") {
-        document.getElementById("about").style.display = "block";
-    }
-
-  }
 
   
 }

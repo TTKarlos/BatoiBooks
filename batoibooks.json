@@ -2143,6 +2143,15 @@
       "pages": "343",
       "status": "new",
       "comments": ""
+    },
+    {
+      "id": "3",
+      "moduleCode": "0011",
+      "publisher": "la peste",
+      "price": "44",
+      "pages": "54",
+      "status": "new",
+      "comments": ""
     }
   ]
 }

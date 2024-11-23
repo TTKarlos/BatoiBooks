@@ -96,6 +96,7 @@ export default class Vista {
           callback(payload)
       })
   }
+  
     // Método que configura el manejador para la eliminación de un libro
     setBookRemoveHandler(callback) {
       this.remove.addEventListener('click', () => {
@@ -119,7 +120,7 @@ export default class Vista {
         callback(action, bookId); // Llamar al callback con acción e ID
       });
     }
-
+    
     setFormForEditing(book) {
       this.form.style.display = "block";
       // Selecciona el segundo <h2> dentro del formulario y lo cambia a "Editar Libro"
